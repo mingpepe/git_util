@@ -50,8 +50,8 @@ type GitRepo struct {
 	State             GIT_STATE
 }
 
-func (a *GitRepo) Parse() {
-	desc := a.Desc
+func (a *GitRepo) Parse(desc string) {
+	a.Desc = desc
 	a.BranchName = parseBranchName(desc)
 	a.AnyUntrackedFiles = strings.Contains(desc, "Untracked files:")
 	if strings.Contains(desc, "up to date with") {
@@ -96,13 +96,13 @@ func probeInternal(path string) ([]GitRepo, bool) {
 }
 
 func checkStatus(path string) GitRepo {
+	cmd := exec.Command("git", "-C", path, "status")
+	raw, err := cmd.Output()
+	if err != nil {
+		log.Panicf("Error while execite git status : %v\n", err)
+	}
 	a := GitRepo{Path: path}
-	c, b := exec.Command("git", "-C", path, "status"), new(strings.Builder)
-	c.Stdout = b
-	c.Run()
-
-	a.Desc = b.String()
-	a.Parse()
+	a.Parse(string(raw))
 	return a
 }
 

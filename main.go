@@ -9,13 +9,15 @@ import (
 	"github.com/mingpepe/git_util/util"
 )
 
+const FMT = "%-50s %-20s %-20s"
+
 func printGitRepoTitle() {
-	msg := fmt.Sprintf("%-50s %-20s %-20s", "Path", "BranchName", "State")
+	msg := fmt.Sprintf(FMT, "Path", "BranchName", "State")
 	color.Green(msg)
 }
 
 func printGitRepo(r util.GitRepo) {
-	msg := fmt.Sprintf("%-50s %-20s %-20s", r.Path, r.BranchName, r.State.String())
+	msg := fmt.Sprintf(FMT, r.Path, r.BranchName, r.State.String())
 	switch r.State {
 	case util.UPDATE_TO_DATE:
 		color.Green(msg)
@@ -45,5 +47,4 @@ func main() {
 	} else {
 		log.Print("Git seems not installed yet")
 	}
-
 }
