@@ -37,7 +37,7 @@ func IsGitSupport() bool {
 	return strings.HasPrefix(string(raw), "git version")
 }
 
-func isGitDir(path string) bool {
+func IsGitDir(path string) bool {
 	_, err := os.Stat(path + "\\.git")
 	return !os.IsNotExist(err)
 }
@@ -76,7 +76,7 @@ func Probe(path string) []GitRepo {
 
 func probeInternal(path string) ([]GitRepo, bool) {
 	ret := make([]GitRepo, 0)
-	if isGitDir(path) {
+	if IsGitDir(path) {
 		ret = append(ret, checkStatus(path))
 		return ret, true
 	} else {

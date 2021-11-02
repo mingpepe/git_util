@@ -1,8 +1,13 @@
-EXE := main.exe
+RS := repoSummary.exe
+LA := logAnalysis.exe
 
-all:$(EXE)
+all:$(RS) $(LA)
 	
-$(EXE): app\summary\main.go
-	go build app\summary\main.go
+$(RS): app\summary\main.go
+	go build -o $(RS) app\summary\main.go 
+
+$(LA): app\logAnalysis\main.go
+	go build -o $(LA) app\logAnalysis\main.go 
+
 clean:
-	del $(EXE)
+	del *.exe
