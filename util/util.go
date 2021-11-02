@@ -1,12 +1,32 @@
 package util
 
 import (
-	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
 )
+
+type GIT_STATE int
+
+const (
+	UPDATE_TO_DATE GIT_STATE = iota
+	UN_PUSHED
+	UN_COMMITED
+	UN_STAGED
+	NO_COMMITS_YET
+)
+
+func (state GIT_STATE) String() string {
+	return [...]string{
+		"UPDATE_TO_DATE",
+		"UN_PUSHED",
+		"UN_COMMITED",
+		"UN_STAGED",
+		"NO_COMMITS_YET",
+	}[state]
+}
 
 func isGitDir(path string) bool {
 	_, err := os.Stat(path + "\\.git")
@@ -14,21 +34,30 @@ func isGitDir(path string) bool {
 }
 
 type GitRepo struct {
-	Path                 string
-	Desc                 string
-	AnyUntrackedFiles    bool
-	ChangesToBeCommitted bool
-	NotFullPush          bool
-}
-
-func (a *GitRepo) String() string {
-	return fmt.Sprintf("%s\nAnyUntrackedFiles : %v\nChangesToBeCommitted:%v\nNotFullPush:%v\n", a.Path, a.AnyUntrackedFiles, a.ChangesToBeCommitted, a.NotFullPush)
+	Path              string
+	Desc              string
+	BranchName        string
+	AnyUntrackedFiles bool
+	State             GIT_STATE
 }
 
 func (a *GitRepo) Parse() {
-	a.AnyUntrackedFiles = strings.Contains(a.Desc, "Untracked files:")
-	a.ChangesToBeCommitted = strings.Contains(a.Desc, "Changes to be committed:")
-	a.NotFullPush = !strings.Contains(a.Desc, "Your branch is ahead of")
+	desc := a.Desc
+	a.BranchName = strings.Split(strings.Split(desc, "\n")[0], " ")[2]
+	a.AnyUntrackedFiles = strings.Contains(desc, "Untracked files:")
+	if strings.Contains(desc, "up to date with") {
+		a.State = UPDATE_TO_DATE
+	} else if strings.Contains(desc, "Your branch is ahead of") {
+		a.State = UN_PUSHED
+	} else if strings.Contains(desc, "Changes to be committed:") {
+		a.State = UN_COMMITED
+	} else if strings.Contains(desc, "Changes not staged for commit") {
+		a.State = UN_STAGED
+	} else if strings.Contains(desc, "No commits yet") {
+		a.State = NO_COMMITS_YET
+	} else {
+		log.Panicf("Unknown log msg : %s\n", desc)
+	}
 }
 
 func Probe(path string) []GitRepo {

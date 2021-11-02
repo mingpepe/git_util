@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"fmt"
+	"log"
 
 	"github.com/mingpepe/git_util/util"
 )
@@ -13,6 +13,9 @@ func main() {
 
 	ret := util.Probe(*path)
 	for _, a := range ret {
-		fmt.Println(a.String())
+		log.Printf("Path : %s\n", a.Path)
+		log.Printf("Branch name : %s\n", a.BranchName)
+		log.Printf("Any untracked files : %v\n", a.AnyUntrackedFiles)
+		log.Printf("State : %v\n\n", a.State)
 	}
 }
