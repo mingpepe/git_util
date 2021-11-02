@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/mingpepe/git_util/report"
+	"github.com/mingpepe/git_util/util"
 )
 
 type CommitLog struct {
@@ -44,7 +44,7 @@ func (c *CommitLog) String() string {
 }
 
 func main() {
-	if !report.IsGitSupport() {
+	if !util.IsGitSupport() {
 		log.Print("Git seems not installed yet")
 		return
 	}
@@ -53,7 +53,7 @@ func main() {
 	var n = flag.Int("n", -1, "Number of log")
 	flag.Parse()
 
-	if !report.IsGitDir(*path) {
+	if !util.IsGitDir(*path) {
 		log.Print("Not a git repo")
 		return
 	}

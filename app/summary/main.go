@@ -7,6 +7,7 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/mingpepe/git_util/report"
+	"github.com/mingpepe/git_util/util"
 )
 
 const FMT = "%-50s %-20s %-20s"
@@ -38,7 +39,7 @@ func main() {
 	var path = flag.String("p", ".", "For git repo path")
 	flag.Parse()
 
-	if report.IsGitSupport() {
+	if util.IsGitSupport() {
 		ret := report.Probe(*path)
 		printGitRepoTitle()
 		for _, r := range ret {

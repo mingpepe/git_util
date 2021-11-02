@@ -3,9 +3,10 @@ package report
 import (
 	"io/ioutil"
 	"log"
-	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/mingpepe/git_util/util"
 )
 
 type GIT_STATE int
@@ -26,20 +27,6 @@ func (state GIT_STATE) String() string {
 		"UN_STAGED",
 		"NO_COMMITS_YET",
 	}[state]
-}
-
-func IsGitSupport() bool {
-	cmd := exec.Command("git", "version")
-	raw, err := cmd.Output()
-	if err != nil {
-		return false
-	}
-	return strings.HasPrefix(string(raw), "git version")
-}
-
-func IsGitDir(path string) bool {
-	_, err := os.Stat(path + "\\.git")
-	return !os.IsNotExist(err)
 }
 
 type GitRepo struct {
@@ -76,7 +63,7 @@ func Probe(path string) []GitRepo {
 
 func probeInternal(path string) ([]GitRepo, bool) {
 	ret := make([]GitRepo, 0)
-	if IsGitDir(path) {
+	if util.IsGitDir(path) {
 		ret = append(ret, checkStatus(path))
 		return ret, true
 	} else {
