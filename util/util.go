@@ -43,7 +43,7 @@ type GitRepo struct {
 
 func (a *GitRepo) Parse() {
 	desc := a.Desc
-	a.BranchName = strings.Split(strings.Split(desc, "\n")[0], " ")[2]
+	a.BranchName = parseBranchName(desc)
 	a.AnyUntrackedFiles = strings.Contains(desc, "Untracked files:")
 	if strings.Contains(desc, "up to date with") {
 		a.State = UPDATE_TO_DATE
@@ -95,4 +95,14 @@ func checkStatus(path string) GitRepo {
 	a.Desc = b.String()
 	a.Parse()
 	return a
+}
+
+func parseBranchName(desc string) string {
+	if strings.HasPrefix(desc, "On branch ") {
+		firstLine := strings.Split(desc, "\n")[0]
+		return strings.Split(firstLine, " ")[2]
+	} else {
+		log.Panicf("Unexpeced git log : %s\n", desc)
+		return ""
+	}
 }
