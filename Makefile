@@ -2,7 +2,7 @@ EXE := main.exe
 
 all:$(EXE)
 	
-$(EXE): main.go
-	go build main.go
+$(EXE): app\summary\main.go
+	go build app\summary\main.go
 clean:
 	del $(EXE)

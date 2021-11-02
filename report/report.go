@@ -1,4 +1,4 @@
-package util
+package report
 
 import (
 	"io/ioutil"

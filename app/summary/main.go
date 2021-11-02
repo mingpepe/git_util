@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/fatih/color"
-	"github.com/mingpepe/git_util/util"
+	"github.com/mingpepe/git_util/report"
 )
 
 const FMT = "%-50s %-20s %-20s"
@@ -16,18 +16,18 @@ func printGitRepoTitle() {
 	color.Green(msg)
 }
 
-func printGitRepo(r util.GitRepo) {
+func printGitRepo(r report.GitRepo) {
 	msg := fmt.Sprintf(FMT, r.Path, r.BranchName, r.State.String())
 	switch r.State {
-	case util.UPDATE_TO_DATE:
+	case report.UPDATE_TO_DATE:
 		color.Green(msg)
-	case util.UN_PUSHED:
+	case report.UN_PUSHED:
 		color.Yellow(msg)
-	case util.UN_COMMITED:
+	case report.UN_COMMITED:
 		color.Red(msg)
-	case util.UN_STAGED:
+	case report.UN_STAGED:
 		color.Red(msg)
-	case util.NO_COMMITS_YET:
+	case report.NO_COMMITS_YET:
 		color.Red(msg)
 	default:
 		panic("unknown git state")
@@ -38,8 +38,8 @@ func main() {
 	var path = flag.String("p", ".", "For git repo path")
 	flag.Parse()
 
-	if util.IsGitSupport() {
-		ret := util.Probe(*path)
+	if report.IsGitSupport() {
+		ret := report.Probe(*path)
 		printGitRepoTitle()
 		for _, r := range ret {
 			printGitRepo(r)
