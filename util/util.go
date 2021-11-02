@@ -28,6 +28,15 @@ func (state GIT_STATE) String() string {
 	}[state]
 }
 
+func IsGitSupport() bool {
+	cmd := exec.Command("git", "version")
+	raw, err := cmd.Output()
+	if err != nil {
+		return false
+	}
+	return strings.HasPrefix(string(raw), "git version")
+}
+
 func isGitDir(path string) bool {
 	_, err := os.Stat(path + "\\.git")
 	return !os.IsNotExist(err)
