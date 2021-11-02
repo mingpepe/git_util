@@ -99,7 +99,7 @@ func checkStatus(path string) GitRepo {
 	cmd := exec.Command("git", "-C", path, "status")
 	raw, err := cmd.Output()
 	if err != nil {
-		log.Panicf("Error while execite git status : %v\n", err)
+		log.Panicf("Error while execute git status : %v\n", err)
 	}
 	a := GitRepo{Path: path}
 	a.Parse(string(raw))
