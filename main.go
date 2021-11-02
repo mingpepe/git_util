@@ -9,6 +9,11 @@ import (
 	"github.com/mingpepe/git_util/util"
 )
 
+func printGitRepoTitle() {
+	msg := fmt.Sprintf("%-50s %-20s %-20s", "Path", "BranchName", "State")
+	color.Green(msg)
+}
+
 func printGitRepo(r util.GitRepo) {
 	msg := fmt.Sprintf("%-50s %-20s %-20s", r.Path, r.BranchName, r.State.String())
 	switch r.State {
@@ -33,6 +38,7 @@ func main() {
 
 	if util.IsGitSupport() {
 		ret := util.Probe(*path)
+		printGitRepoTitle()
 		for _, r := range ret {
 			printGitRepo(r)
 		}
