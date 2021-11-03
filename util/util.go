@@ -16,6 +16,6 @@ func IsGitSupport() bool {
 }
 
 func IsGitDir(path string) bool {
-	_, err := os.Stat(path + "\\.git")
+	_, err := os.Stat(path + "//.git")
 	return !os.IsNotExist(err)
 }

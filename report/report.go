@@ -73,7 +73,7 @@ func probeInternal(path string) ([]GitRepo, bool) {
 		any := false
 		for _, file := range fileInfo {
 			if file.IsDir() {
-				r, a := probeInternal(path + "\\" + file.Name())
+				r, a := probeInternal(path + "//" + file.Name())
 				if a {
 					ret = append(ret, r...)
 					any = true
