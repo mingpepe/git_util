@@ -11,7 +11,7 @@ repoSummary.exe -p <path to dir contains git repos>
 ```
 
 Dependency
-* [https://github.com/fatih/color](color)
+* [color](https://github.com/fatih/color)
 
 Reference
-* [https://github.com/MirkoLedda/git-summary](git-summary)
+* [git-summary](https://github.com/MirkoLedda/git-summary)
