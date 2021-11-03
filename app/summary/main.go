@@ -30,6 +30,8 @@ func printGitRepo(r report.GitRepo) {
 		color.Red(msg)
 	case report.NO_COMMITS_YET:
 		color.Red(msg)
+	case report.UNKNOWN:
+		color.Magenta(msg)
 	default:
 		panic("unknown git state")
 	}

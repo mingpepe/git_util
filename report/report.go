@@ -17,6 +17,7 @@ const (
 	UN_COMMITED
 	UN_STAGED
 	NO_COMMITS_YET
+	UNKNOWN
 )
 
 func (state GIT_STATE) String() string {
@@ -26,6 +27,7 @@ func (state GIT_STATE) String() string {
 		"UN_COMMITED",
 		"UN_STAGED",
 		"NO_COMMITS_YET",
+		"UNKNOWN",
 	}[state]
 }
 
@@ -52,7 +54,7 @@ func (a *GitRepo) Parse(desc string) {
 	} else if strings.Contains(desc, "No commits yet") {
 		a.State = NO_COMMITS_YET
 	} else {
-		log.Panicf("Unknown log msg : %s\n", desc)
+		a.State = UNKNOWN
 	}
 }
 
