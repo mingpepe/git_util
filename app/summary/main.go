@@ -10,14 +10,16 @@ import (
 	"github.com/mingpepe/git_util/util"
 )
 
-const FMT = "%-50s %-20s %-20s"
+const FFMT = "%%-%ds %%-20s %%-20s"
 
-func printGitRepoTitle() {
+func printGitRepoTitle(maxPathWidth int) {
+	FMT := fmt.Sprintf(FFMT, maxPathWidth)
 	msg := fmt.Sprintf(FMT, "Path", "BranchName", "State")
 	color.Green(msg)
 }
 
-func printGitRepo(r repo.GitRepo) {
+func printGitRepo(r repo.GitRepo, maxPathWidth int) {
+	FMT := fmt.Sprintf(FFMT, maxPathWidth)
 	msg := fmt.Sprintf(FMT, r.Path, r.BranchName, r.State.String())
 	switch r.State {
 	case repo.UPDATE_TO_DATE:
@@ -37,15 +39,30 @@ func printGitRepo(r repo.GitRepo) {
 	}
 }
 
+func findMaxPathLen(repos []repo.GitRepo) int {
+	w := 0
+	for _, r := range repos {
+		_len := len(r.Path)
+		if _len > w {
+			w = _len
+		}
+	}
+	return w
+}
+
 func main() {
 	var path = flag.String("p", ".", "For git repo path")
 	flag.Parse()
 
 	if util.IsGitSupport() {
 		ret := repo.Probe(*path)
-		printGitRepoTitle()
+		maxPathWidth := findMaxPathLen(ret)
+		if maxPathWidth < 20 {
+			maxPathWidth = 20
+		}
+		printGitRepoTitle(maxPathWidth)
 		for _, r := range ret {
-			printGitRepo(r)
+			printGitRepo(r, maxPathWidth)
 		}
 	} else {
 		log.Print("Git seems not installed yet")
