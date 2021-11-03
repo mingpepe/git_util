@@ -19,8 +19,8 @@ type CommitLog struct {
 
 func parse(msg string) []CommitLog {
 	layout := "2006-01-02 15:04:05"
-	commits := make([]CommitLog, 0)
 	lines := strings.Split(msg, "\n")
+	commits := make([]CommitLog, len(lines))
 	for _, line := range lines {
 		sep := strings.Split(line, "_")
 		t, err := time.Parse(layout, sep[0][1:len(sep[0])-1])
