@@ -15,7 +15,7 @@ const FFMT = "%%-%ds %%-20s %%-20s"
 func printGitRepoTitle(maxPathWidth int) {
 	FMT := fmt.Sprintf(FFMT, maxPathWidth)
 	msg := fmt.Sprintf(FMT, "Path", "BranchName", "State")
-	color.Green(msg)
+	color.Green(msg)@@
 }
 
 func printGitRepo(r repo.GitRepo, maxPathWidth int) {
