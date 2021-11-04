@@ -1,3 +1,4 @@
+![Build](https://github.com/mingpepe/git_util/actions/workflows/go.yml/badge.svg)
 # git_util
 
 ## Usage
