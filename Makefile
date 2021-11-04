@@ -1,11 +1,13 @@
 ifeq ($(OS),Windows_NT)
     DEL := del
+    EXT := exe
 else
     DEL := rm
+    EXT := elf
 endif
 
-RS := repoSummary.exe
-LA := logAnalysis.exe
+RS := repoSummary.$(EXT)
+LA := logAnalysis.$(EXT)
 
 all:$(RS) $(LA)
 	
@@ -16,4 +18,4 @@ $(LA): app/logAnalysis/main.go util/util.go repo/repo.go
 	go build -o $(LA) app/logAnalysis/main.go 
 
 clean:
-	$(DEL) *.exe
+	$(DEL) *.$(EXT)
